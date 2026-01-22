@@ -203,36 +203,40 @@
             const photoWidth = 180;
             const photoHeight = 215;
             
-            // Create a denser grid to ensure coverage
+            // Calculate grid to use full screen height and width
             const totalPhotos = photoData.length;
-            const aspectRatio = window.innerWidth / window.innerHeight;
-            const cols = Math.ceil(Math.sqrt(totalPhotos * aspectRatio)) + 2;
-            const rows = Math.ceil(totalPhotos / cols) + 2;
             
-            // Very small margins to maximize coverage
+            // Calculate rows and columns - favor more rows for better vertical spread
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            const cols = Math.ceil(Math.sqrt(totalPhotos * aspectRatio * 0.6)); // 0.6 to favor more rows
+            const rows = Math.ceil(totalPhotos / cols);
+            
+            // Use entire screen with minimal margins
             const marginX = 10;
             const marginY = 10;
+            const availableWidth = window.innerWidth - marginX * 2;
+            const availableHeight = window.innerHeight - marginY * 2;
             
             // Calculate cell sizes
-            const cellWidth = (window.innerWidth - marginX * 2) / cols;
-            const cellHeight = (window.innerHeight - marginY * 2) / rows;
+            const cellWidth = availableWidth / cols;
+            const cellHeight = availableHeight / rows;
             
-            // Create all polaroids with improved distribution
+            // Create all polaroids
             photoData.forEach((photo, index) => {
                 const polaroid = document.createElement('div');
                 polaroid.className = 'polaroid';
                 
-                // Grid position - distribute evenly
-                const col = index % cols;
+                // Calculate row and column
                 const row = Math.floor(index / cols);
+                const col = index % cols;
                 
-                // Base position centered in cell
+                // Base position - center of cell
                 let x = marginX + col * cellWidth + (cellWidth - photoWidth) / 2;
                 let y = marginY + row * cellHeight + (cellHeight - photoHeight) / 2;
                 
-                // Add controlled randomness (less than before to maintain coverage)
-                const randomX = (Math.random() - 0.5) * Math.min(cellWidth * 0.3, 40);
-                const randomY = (Math.random() - 0.5) * Math.min(cellHeight * 0.3, 40);
+                // Add some randomness for natural look
+                const randomX = (Math.random() - 0.5) * Math.min(cellWidth * 0.4, 50);
+                const randomY = (Math.random() - 0.5) * Math.min(cellHeight * 0.4, 50);
                 
                 x += randomX;
                 y += randomY;
@@ -245,16 +249,16 @@
                     Math.abs(photoCenterY - centerY) < avoidHeight / 2) {
                     // Push away from center
                     const angle = Math.atan2(photoCenterY - centerY, photoCenterX - centerX);
-                    const pushDistance = 100;
+                    const pushDistance = 120;
                     x += Math.cos(angle) * pushDistance;
                     y += Math.sin(angle) * pushDistance;
                 }
                 
-                // Ensure photos stay within bounds (allowing right up to edges)
+                // Keep within bounds
                 x = Math.max(0, Math.min(x, window.innerWidth - photoWidth));
                 y = Math.max(0, Math.min(y, window.innerHeight - photoHeight));
                 
-                const rotation = (Math.random() - 0.5) * 18; // Slightly less rotation
+                const rotation = (Math.random() - 0.5) * 18;
                 
                 polaroid.style.left = x + 'px';
                 polaroid.style.top = y + 'px';
