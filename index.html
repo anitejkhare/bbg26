@@ -53,9 +53,9 @@
             font-family: 'Funnel Sans', sans-serif;
             font-size: 52px;
             font-weight: 700;
-            color: #fff;
-            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4),
-                         0 4px 40px rgba(0, 0, 0, 0.3);
+            color: #000;
+            text-shadow: 0 2px 20px rgba(255, 255, 255, 0.8),
+                         0 4px 40px rgba(255, 255, 255, 0.6);
             text-transform: lowercase;
             letter-spacing: -0.5px;
             -webkit-font-smoothing: antialiased;
@@ -71,7 +71,7 @@
             z-index: 100;
             text-align: center;
             pointer-events: none;
-            width: 100%;
+            width: auto;
             padding: 0 40px;
         }
 
@@ -79,9 +79,9 @@
             font-family: 'Funnel Sans', sans-serif;
             font-size: 24px;
             font-weight: 500;
-            color: #fff;
-            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4),
-                         0 4px 40px rgba(0, 0, 0, 0.3);
+            color: #000;
+            text-shadow: 0 2px 20px rgba(255, 255, 255, 0.8),
+                         0 4px 40px rgba(255, 255, 255, 0.6);
             text-transform: lowercase;
             letter-spacing: 0.5px;
             white-space: nowrap;
@@ -90,11 +90,11 @@
             text-rendering: optimizeLegibility;
         }
 
-        /* Smaller polaroids for better performance */
+        /* Polaroids */
         .polaroid {
             position: absolute;
-            background: #fff;
-            padding: 8px 8px 35px 8px;
+            background: #FEFDF8;
+            padding: 10px 10px 45px 10px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15),
                         0 2px 4px rgba(0, 0, 0, 0.1);
             cursor: move;
@@ -116,8 +116,8 @@
         }
 
         .polaroid img {
-            width: 120px;
-            height: 120px;
+            width: 160px;
+            height: 160px;
             object-fit: cover;
             display: block;
             filter: saturate(0.85) contrast(1.05) brightness(1.02);
@@ -140,16 +140,12 @@
 
         @media (max-width: 768px) {
             .polaroid img {
-                width: 100px;
-                height: 100px;
+                width: 130px;
+                height: 130px;
             }
 
             .center-text h1 {
                 font-size: 36px;
-            }
-
-            .bottom-quote {
-                padding: 0 20px;
             }
 
             .bottom-quote p {
@@ -163,7 +159,7 @@
 <body>
     <div id="container">
         <div class="center-text">
-            <h1>happy birthday babygirl</h1>
+            <h1>happy birthday babygirl ❤️</h1>
         </div>
         
         <div class="bottom-quote">
@@ -199,59 +195,66 @@
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
             
-            // Simple rectangular avoidance zone around center text
+            // Avoidance zone around center text
             const avoidWidth = 500;
             const avoidHeight = 150;
             
-            // Calculate grid
-            const cols = Math.ceil(Math.sqrt(photoData.length * (window.innerWidth / window.innerHeight)));
-            const rows = Math.ceil(photoData.length / cols);
+            // Photo dimensions
+            const photoWidth = 180;
+            const photoHeight = 215;
             
-            const marginX = 40;
-            const marginY = 40;
-            const availableWidth = window.innerWidth - marginX * 2;
-            const availableHeight = window.innerHeight - marginY * 2;
+            // Create a denser grid to ensure coverage
+            const totalPhotos = photoData.length;
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            const cols = Math.ceil(Math.sqrt(totalPhotos * aspectRatio)) + 2;
+            const rows = Math.ceil(totalPhotos / cols) + 2;
             
-            const cellWidth = availableWidth / cols;
-            const cellHeight = availableHeight / rows;
+            // Very small margins to maximize coverage
+            const marginX = 10;
+            const marginY = 10;
             
-            // Create all polaroids
+            // Calculate cell sizes
+            const cellWidth = (window.innerWidth - marginX * 2) / cols;
+            const cellHeight = (window.innerHeight - marginY * 2) / rows;
+            
+            // Create all polaroids with improved distribution
             photoData.forEach((photo, index) => {
                 const polaroid = document.createElement('div');
                 polaroid.className = 'polaroid';
                 
-                // Grid position
+                // Grid position - distribute evenly
                 const col = index % cols;
                 const row = Math.floor(index / cols);
                 
-                let baseX = marginX + col * cellWidth + cellWidth / 2 - 68;
-                let baseY = marginY + row * cellHeight + cellHeight / 2 - 85;
+                // Base position centered in cell
+                let x = marginX + col * cellWidth + (cellWidth - photoWidth) / 2;
+                let y = marginY + row * cellHeight + (cellHeight - photoHeight) / 2;
                 
-                // Randomness within cell
-                const randomX = (Math.random() - 0.5) * (cellWidth * 0.4);
-                const randomY = (Math.random() - 0.5) * (cellHeight * 0.4);
+                // Add controlled randomness (less than before to maintain coverage)
+                const randomX = (Math.random() - 0.5) * Math.min(cellWidth * 0.3, 40);
+                const randomY = (Math.random() - 0.5) * Math.min(cellHeight * 0.3, 40);
                 
-                let x = baseX + randomX;
-                let y = baseY + randomY;
+                x += randomX;
+                y += randomY;
                 
-                // Check if overlapping with center text area and push away
-                const photoX = x + 68;
-                const photoY = y + 85;
+                // Check if overlapping with center text and push away
+                const photoCenterX = x + photoWidth / 2;
+                const photoCenterY = y + photoHeight / 2;
                 
-                if (Math.abs(photoX - centerX) < avoidWidth / 2 && 
-                    Math.abs(photoY - centerY) < avoidHeight / 2) {
+                if (Math.abs(photoCenterX - centerX) < avoidWidth / 2 && 
+                    Math.abs(photoCenterY - centerY) < avoidHeight / 2) {
                     // Push away from center
-                    const angle = Math.atan2(photoY - centerY, photoX - centerX);
-                    const pushDistance = 50;
+                    const angle = Math.atan2(photoCenterY - centerY, photoCenterX - centerX);
+                    const pushDistance = 100;
                     x += Math.cos(angle) * pushDistance;
                     y += Math.sin(angle) * pushDistance;
                 }
                 
-                // Bounds
-                x = Math.max(10, Math.min(x, window.innerWidth - 146));
-                y = Math.max(10, Math.min(y, window.innerHeight - 175));
+                // Ensure photos stay within bounds (allowing right up to edges)
+                x = Math.max(0, Math.min(x, window.innerWidth - photoWidth));
+                y = Math.max(0, Math.min(y, window.innerHeight - photoHeight));
                 
-                const rotation = (Math.random() - 0.5) * 20;
+                const rotation = (Math.random() - 0.5) * 18; // Slightly less rotation
                 
                 polaroid.style.left = x + 'px';
                 polaroid.style.top = y + 'px';
