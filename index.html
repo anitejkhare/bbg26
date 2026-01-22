@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Baby ❤️</title>
+    <title>Happy Birthday Ananya</title>
     <link href="https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@400;500;600;700&family=Reenie+Beanie&family=Covered+By+Your+Grace&display=swap" rel="stylesheet">
     <style>
         * {
@@ -101,6 +101,11 @@
             transition: transform 0.1s ease, box-shadow 0.2s ease;
             user-select: none;
             z-index: 10;
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
 
         .polaroid:hover {
@@ -120,7 +125,12 @@
             height: 160px;
             object-fit: cover;
             display: block;
-            filter: saturate(0.85) contrast(1.05) brightness(1.02);
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
 
         .polaroid .caption {
@@ -266,6 +276,9 @@
                 
                 const img = document.createElement('img');
                 img.src = photo.src;
+                img.loading = 'eager'; // Load all images immediately at full quality
+                img.decoding = 'sync'; // Decode images synchronously for better quality
+                img.style.imageRendering = 'high-quality';
                 
                 const captionDiv = document.createElement('div');
                 captionDiv.className = 'caption';
