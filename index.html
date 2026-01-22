@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Baby ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Sans:wght@400;500;600;700&family=Reenie+Beanie&family=Covered+By+Your+Grace&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Funnel Sans', sans-serif;
+            background: linear-gradient(135deg, #8AB0C1 0%, #9BBDCF 50%, #AAC9DB 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .center-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .center-text h1 {
+            font-family: 'Funnel Sans', sans-serif;
+            font-size: 52px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4),
+                         0 4px 40px rgba(0, 0, 0, 0.3);
+            text-transform: lowercase;
+            letter-spacing: -0.5px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        .bottom-quote {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            text-align: center;
+            pointer-events: none;
+            width: 100%;
+            padding: 0 40px;
+        }
+
+        .bottom-quote p {
+            font-family: 'Funnel Sans', sans-serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: #fff;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4),
+                         0 4px 40px rgba(0, 0, 0, 0.3);
+            text-transform: lowercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* Smaller polaroids for better performance */
+        .polaroid {
+            position: absolute;
+            background: #fff;
+            padding: 8px 8px 35px 8px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15),
+                        0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: move;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            user-select: none;
+            z-index: 10;
+        }
+
+        .polaroid:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2),
+                        0 4px 8px rgba(0, 0, 0, 0.15);
+            z-index: 50;
+        }
+
+        .polaroid.dragging {
+            z-index: 1000;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        .polaroid img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+            filter: saturate(0.85) contrast(1.05) brightness(1.02);
+        }
+
+        .polaroid .caption {
+            position: absolute;
+            bottom: 6px;
+            left: 8px;
+            right: 8px;
+            text-align: center;
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 18px;
+            color: #5a5a5a;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .polaroid img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .center-text h1 {
+                font-size: 36px;
+            }
+
+            .bottom-quote {
+                padding: 0 20px;
+            }
+
+            .bottom-quote p {
+                font-size: 18px;
+                white-space: normal;
+                line-height: 1.4;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="center-text">
+            <h1>happy birthday babygirl</h1>
+        </div>
+        
+        <div class="bottom-quote">
+            <p>my heart's a thousand colours and they're all shades of you</p>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // PHOTO DATA - Using photos from GitHub repo
+        // ========================================
+        const photoData = [
+            {src: "photos/1.jpg"}, {src: "photos/2.jpg"}, {src: "photos/3.JPG"}, {src: "photos/4.JPG"}, 
+            {src: "photos/5.JPG"}, {src: "photos/6.JPG"}, {src: "photos/7.JPG"}, {src: "photos/8.jpg"}, 
+            {src: "photos/9.jpg"}, {src: "photos/10.jpg"}, {src: "photos/11.jpg"}, {src: "photos/12.jpg"}, 
+            {src: "photos/13.jpg"}, {src: "photos/14.jpg"}, {src: "photos/15.jpg"}, {src: "photos/16.jpg"}, 
+            {src: "photos/17.jpg"}, {src: "photos/18.PNG"}, {src: "photos/19.PNG"}, {src: "photos/20.PNG"}, 
+            {src: "photos/21.PNG"}, {src: "photos/22.PNG"}, {src: "photos/23.JPG"}, {src: "photos/24.jpg"}, 
+            {src: "photos/25.jpg"}, {src: "photos/26.jpeg"}, {src: "photos/27.jpeg"}, {src: "photos/28.jpeg"}, 
+            {src: "photos/29.jpeg"}, {src: "photos/30.jpeg"}, {src: "photos/31.jpeg"}, {src: "photos/32.jpeg"}, 
+            {src: "photos/33.jpeg"}, {src: "photos/34.jpeg"}, {src: "photos/35.jpeg"}, {src: "photos/36.jpeg"}, 
+            {src: "photos/37.jpeg"}, {src: "photos/38.jpeg"}, {src: "photos/39.jpeg"}, {src: "photos/40.jpeg"}, 
+            {src: "photos/41.jpeg"}, {src: "photos/42.jpeg"}, {src: "photos/43.jpeg"}, {src: "photos/44.jpeg"}, 
+            {src: "photos/45.jpeg"}
+        ];
+        // ========================================
+
+        let draggedElement = null;
+        let offset = { x: 0, y: 0 };
+
+        function arrangePhotosInGradient() {
+            const container = document.getElementById('container');
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            
+            // Simple rectangular avoidance zone around center text
+            const avoidWidth = 500;
+            const avoidHeight = 150;
+            
+            // Calculate grid
+            const cols = Math.ceil(Math.sqrt(photoData.length * (window.innerWidth / window.innerHeight)));
+            const rows = Math.ceil(photoData.length / cols);
+            
+            const marginX = 40;
+            const marginY = 40;
+            const availableWidth = window.innerWidth - marginX * 2;
+            const availableHeight = window.innerHeight - marginY * 2;
+            
+            const cellWidth = availableWidth / cols;
+            const cellHeight = availableHeight / rows;
+            
+            // Create all polaroids
+            photoData.forEach((photo, index) => {
+                const polaroid = document.createElement('div');
+                polaroid.className = 'polaroid';
+                
+                // Grid position
+                const col = index % cols;
+                const row = Math.floor(index / cols);
+                
+                let baseX = marginX + col * cellWidth + cellWidth / 2 - 68;
+                let baseY = marginY + row * cellHeight + cellHeight / 2 - 85;
+                
+                // Randomness within cell
+                const randomX = (Math.random() - 0.5) * (cellWidth * 0.4);
+                const randomY = (Math.random() - 0.5) * (cellHeight * 0.4);
+                
+                let x = baseX + randomX;
+                let y = baseY + randomY;
+                
+                // Check if overlapping with center text area and push away
+                const photoX = x + 68;
+                const photoY = y + 85;
+                
+                if (Math.abs(photoX - centerX) < avoidWidth / 2 && 
+                    Math.abs(photoY - centerY) < avoidHeight / 2) {
+                    // Push away from center
+                    const angle = Math.atan2(photoY - centerY, photoX - centerX);
+                    const pushDistance = 50;
+                    x += Math.cos(angle) * pushDistance;
+                    y += Math.sin(angle) * pushDistance;
+                }
+                
+                // Bounds
+                x = Math.max(10, Math.min(x, window.innerWidth - 146));
+                y = Math.max(10, Math.min(y, window.innerHeight - 175));
+                
+                const rotation = (Math.random() - 0.5) * 20;
+                
+                polaroid.style.left = x + 'px';
+                polaroid.style.top = y + 'px';
+                polaroid.style.transform = `rotate(${rotation}deg)`;
+                
+                const img = document.createElement('img');
+                img.src = photo.src;
+                
+                const captionDiv = document.createElement('div');
+                captionDiv.className = 'caption';
+                captionDiv.textContent = '';
+                
+                polaroid.appendChild(img);
+                polaroid.appendChild(captionDiv);
+                container.appendChild(polaroid);
+                
+                makeDraggable(polaroid);
+            });
+        }
+
+        function makeDraggable(element) {
+            element.addEventListener('mousedown', startDrag);
+            element.addEventListener('touchstart', startDrag);
+        }
+
+        function startDrag(e) {
+            draggedElement = this;
+            draggedElement.classList.add('dragging');
+            
+            const transform = window.getComputedStyle(draggedElement).transform;
+            const matrix = transform.match(/matrix\(([^)]+)\)/);
+            let currentRotation = 0;
+            if (matrix) {
+                const values = matrix[1].split(',');
+                const a = values[0];
+                const b = values[1];
+                currentRotation = Math.atan2(b, a) * (180 / Math.PI);
+            }
+            draggedElement.dataset.rotation = currentRotation;
+            
+            const clientX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+            const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+            
+            const rect = draggedElement.getBoundingClientRect();
+            offset.x = clientX - rect.left;
+            offset.y = clientY - rect.top;
+            
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDrag);
+            document.addEventListener('touchmove', drag);
+            document.addEventListener('touchend', stopDrag);
+            
+            e.preventDefault();
+        }
+
+        function drag(e) {
+            if (!draggedElement) return;
+            
+            const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+            const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+            
+            const x = clientX - offset.x;
+            const y = clientY - offset.y;
+            
+            draggedElement.style.left = x + 'px';
+            draggedElement.style.top = y + 'px';
+            draggedElement.style.transform = `rotate(${draggedElement.dataset.rotation}deg)`;
+        }
+
+        function stopDrag() {
+            if (draggedElement) {
+                draggedElement.classList.remove('dragging');
+                draggedElement = null;
+            }
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('mouseup', stopDrag);
+            document.removeEventListener('touchmove', drag);
+            document.removeEventListener('touchend', stopDrag);
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', () => {
+            if (photoData.length > 2) {
+                arrangePhotosInGradient();
+            }
+        });
+    </script>
+</body>
+</html>
